@@ -1,0 +1,17 @@
+:root{
+    --color-primary: #00bcd4;
+    --color-secondary: #fafafa;
+    --color-tertiary: #fafafa;
+    --bg-color: #75BBA7;
+    --color-text: #212121;
+    --primary-font: 'Oswald', sans-serif;
+    font-family: var(--primary-font);
+    background-color: var(--bg-color);/*9FC4908*/
+    color: var(--color-text);
+}
+.center{
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    position: absolute;
+}
