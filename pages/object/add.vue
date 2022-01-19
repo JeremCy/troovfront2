@@ -23,6 +23,29 @@
               />
             </div>
             <div class="relative w-full mb-3">
+
+              <input 
+                id="lost"
+                type="checkbox"
+                class=""
+                v-model="lost"
+              /><span>Lost items?</span>
+            </div>
+            <div class="relative w-full mb-3">
+              <label
+                class="block mb-2 text-xs font-bold uppercase text-blueGray-600"
+                for="grid-password"
+                >Types d'object</label
+              >
+              <input 
+                id="Description"
+                type="text"
+                class="w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow resize-none text-slate-800 placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring"
+                placeholder="types"
+                v-model="types"
+              />
+            </div>
+            <div class="relative w-full mb-3">
               <label
                 class="block mb-2 text-xs font-bold uppercase text-blueGray-600"
                 for="grid-password"
@@ -58,6 +81,8 @@ export default {
         return{ 
             title: "",
             description: "",
+            lost: false,
+            type: "",
             error: "",
         }
     },
@@ -66,7 +91,9 @@ export default {
             try {
                 await this.$axios.post('/object/create',{
                     title: this.title,
-                    description: this.description
+                    description: this.description,
+                    lost: this.lost,
+                    type: this.type,
                 })
                 this.$router.push('/');
             } catch (e) {

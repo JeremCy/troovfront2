@@ -94,10 +94,6 @@ export default {
             email: this.email,
             password: this.password,
           })
-          await this.$auth.logginWith('local', {
-            username: this.username,
-            password: this.password,
-          })
           this.$router.push('/')
         } catch (e) {
           this.error = e.response.data.message

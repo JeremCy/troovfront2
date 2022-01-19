@@ -23,7 +23,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/fontawesome.js'
+    '~/plugins/fontawesome.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -35,6 +35,7 @@ export default {
     '@nuxtjs/tailwindcss',
     '@nuxt/postcss8',
     '@nuxtjs/date-fns',
+    '@nuxtjs/moment',
 
   ],
 
@@ -47,27 +48,35 @@ export default {
   auth: {
     localStorage: false,
     cookie: {
-      prefix: 'auth.',
       options: {
-        path: '/',
-        maxAge: 10800
+        expires: 7
       }
     },
-    strategies: {
-      local: {
-        endpoints: {
-          login: { url: '/auth/signin', method: 'post', propertyName: 'access_token' },
-          user: false,
-          logout: false
-        }
-      }
-    },
-    redirect:{
+    redirect: {
       login: '/auth/signin',
       logout: '/',
       callback: 'auth/login',
       home: '/'
-    }
+    },
+    strategies: {
+      local: {
+        token: {
+          property: "access_token", //property name that the Back-end sends for you as a access token for saving on localStorage and cookie of user browser
+          global: true,
+          required: true,
+          type: "Bearer"
+        },
+        user: {
+          property: "user",
+          autoFetch: true
+        },
+        endpoints: {
+          login: { url: '/auth/signin', method: 'post' },
+          logout: false,
+          user: { url: "/auth/user", method: "get" }
+        },
+      },
+    },
   },
 
   router: {
@@ -77,7 +86,7 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://localhost:8000',
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

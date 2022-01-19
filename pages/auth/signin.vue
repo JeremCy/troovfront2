@@ -11,33 +11,33 @@
           <form @submit.prevent="userSignIn">
             <div class="relative w-full mb-3">
               <label
-                class="block mb-2 text-xs font-bold uppercase text-blueGray-600"
+                class="block mb-2 text-xs font-bold uppercase"
                 for="grid-password"
                 >Username</label
               ><input
                 id="username"
                 type="text"
-                class="w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring"
+                class="w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-slate-500  focus:outline-none focus:ring text-slate-800"
                 placeholder="Username"
-                v-model="username"
+                v-model="user.username"
               />
             </div>
             <div class="relative w-full mb-3">
               <label
-                class="block mb-2 text-xs font-bold uppercase text-blueGray-600"
+                class="block mb-2 text-xs font-bold uppercase"
                 for="grid-password"
                 >Password</label
               ><input
                 id="password"
                 type="password"
-                class="w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring"
+                class="w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-slate-500 text-slate-800 focus:outline-none focus:ring"
                 placeholder="Password"
-                v-model="password"
+                v-model="user.password"
               />
             </div>
             <div class="mt-6 text-center">
               <button
-                class="w-full px-6 py-3 mb-1 mr-1 text-sm font-bold text-white uppercase transition-all duration-150 ease-linear rounded shadow outline-none bg-slate-800 active:bg-blueGray-600 hover:shadow-lg focus:outline-none"
+                class="w-full px-6 py-3 mb-1 mr-1 text-sm font-bold text-white uppercase transition-all duration-150 ease-linear rounded shadow outline-none bg-slate-800 active:bg-white hover:shadow-lg focus:outline-none"
                 type="submit"
               >
                 Sign In
@@ -56,23 +56,26 @@
 export default {
   data() {
     return {
+      user: {
       username: '',
       password: '',
-      error: '',
+      },
+      error:'',
     }
   },
   methods: {
     async userSignIn() {
       try {
-        await this.$auth.loginWith('local', {
-          data: {
-            username: this.username,
-            password: this.password,
-          },
+        let response = await this.$auth.loginWith('local', {
+          data: this.user
         })
-        this.$router.push('/')
+        if(response){
+        await this.$auth.setUserToken(response.data.accessToken)  
+         console.log(response.data.accessToken)      
+        }   
+        this.$router.push('/');
       } catch (e) {
-        this.error = e.response.data.message
+        console.error(e)
       }
     },
   },
